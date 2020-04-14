@@ -13,7 +13,7 @@ public class Field {
        int n = 0;
        for (int i = 0; i < field.length ; i++) {
            for (int j = 0; j < field[i].length ; j++) {
-               if (field[i][j] == 0) n++;
+               if (field[i][j] == status) n++;
            }
 
        }
@@ -23,7 +23,7 @@ public class Field {
        int m = 0;
        for (int i = 0; i < field.length ; i++) {
            for (int j = 0; j < field[i].length ; j++) {
-               if (field[i][j] == 0) {
+               if (field[i][j] == status) {
                    zerroFieldCell[m][0] = i;
                    zerroFieldCell[m][1] = j;
                    m++;
@@ -136,6 +136,7 @@ public class Field {
         for (int i = 0; i < 4; i++) {
             ship(1);
         }
+
 
     }
 
