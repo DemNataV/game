@@ -82,10 +82,13 @@ public class Game {
             //System.out.println("Ходи!");
 
             String str = in.nextLine();
+            str = str.replaceAll(" ", "");
+            str = str.toLowerCase();
             char[] chArray = str.toCharArray();
             //int x = Character.getNumericValue(chArray[0]);
             if (letters.indexOf(chArray[0]) < 0 ||
-                    Character.getNumericValue(chArray[1])>10 || Character.getNumericValue(chArray[1])<1){
+                    Character.getNumericValue(chArray[1])>10 || Character.getNumericValue(chArray[1])<1 ||
+            chArray.length > 2){
                 System.out.println("Разве это ход? Попробуй еще раз...что-то типа: а1, к2 или д10!");
             }
             else {
