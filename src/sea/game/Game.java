@@ -60,6 +60,9 @@ public class Game {
 
     }
 
+    /*char[] letters = new char[];
+    letters =  {"А", "Б", "В", "Г", "Д", "Е", "Ж", "З", "И", "К"};*/
+
     public  void startGame(){
         field.fieldGame();
         /*for (int i = 0; i < field.field.length; i++) {
@@ -69,6 +72,10 @@ public class Game {
         if (field.zerroField(field.field, 1).length == 20){
             System.out.println("Поле готово. Ходи!");
         }
+        else System.out.println("Не удалось сгенерить поле. Попробуйте еще раз");
+
+        String letters = "абвгдежзик";
+
         while (field.zerroField(field.field, 1).length > 0) {
 
             Scanner in = new Scanner(System.in);
@@ -76,14 +83,23 @@ public class Game {
 
             String str = in.nextLine();
             char[] chArray = str.toCharArray();
-            int x = Character.getNumericValue(chArray[0]);
-            int y = Character.getNumericValue(chArray[1]);
+            //int x = Character.getNumericValue(chArray[0]);
+            if (letters.indexOf(chArray[0]) < 0 ||
+                    Character.getNumericValue(chArray[1])>10 || Character.getNumericValue(chArray[1])<1){
+                System.out.println("Разве это ход? Попробуй еще раз...что-то типа: а1, к2 или д10!");
+            }
+            else {
+                int x = letters.indexOf(chArray[0]);
+                int y = Character.getNumericValue(chArray[1]);
 
-            moveUser(x, y);
+                moveUser(x, (y - 1));
+
 
            /* for (int i = 0; i < field.field.length; i++) {
                 System.out.println(Arrays.toString(field.field[i]));
             }*/
+            }
         }
     }
 }
+
