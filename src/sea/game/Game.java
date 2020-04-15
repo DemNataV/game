@@ -6,41 +6,51 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Game {
-    Field field;
+    Field robotField;
+    Field userField;
 
     public Game(Field field) {
-        this.field = field;
+        this.robotField = field;
     }
 
-    String letters = "абвгдежзик";
+    String letters = "АБВГДЕЖИК";
 
-    void moveRobot(){
-        char[] chArray = letters.toCharArray();
-        //char z = chArray[((int) Math.random()*10)];
-       // int v = (int) Math.random()*11;
-        System.out.println("Хожу: " + chArray[((int) (Math.random()*10))] + (int) (Math.random()*11));
+    void processingUserAnswer(){
         Scanner in = new Scanner(System.in);
 
         String str = in.nextLine();
 
-        int x = Integer.valueOf(str);
+        if (str.equals("1") || str.equals("2") || str.equals("3")) {
 
-        if (x == 1){
-            System.out.println("Не попал, говоришь...Ну ходи");
-            moveUser();
-        }
-        else if (x == 2){
-            System.out.println("Ура! Попал!");
-            moveRobot();
-        }
-        else if (x == 3){
-            System.out.println("Убил!");
-            moveRobot();
+            int x = Integer.valueOf(str);
+
+            if (x == 1) {
+                System.out.println("Не попал, говоришь...Ну ходи");
+                moveUser();
+            } else if (x == 2) {
+                System.out.println("Ура! Попал!");
+                moveRobot();
+            } else if (x == 3) {
+                System.out.println("Убил!");
+                moveRobot();
+            }
         }
         else {
             System.out.println("Повторика еще раз! (1-не попал; 2-попал; 3-убил)");
-            moveRobot();
+            processingUserAnswer();
         }
+    }
+
+
+
+    void moveRobot(){
+        char[] chArray = letters.toCharArray();
+
+
+
+        System.out.println("Хожу: " + chArray[((int) (Math.random()*8+1))] + (int) (Math.random()*11));
+
+        processingUserAnswer();
     }
 
 
@@ -48,37 +58,39 @@ public class Game {
 
     void processingMoveUser(int x, int y){
         int[] cell = {x, y};
-        if (field.field[x][y] == 3) {
-            System.out.println("Ты сюда уже промахивался)))");
-        }
-        else if (field.field[x][y] == 4){
-                System.out.println("Хочешь потопить дважды? Давай другую клетку");
-        }
-        else if (field.field[x][y] == 0 || field.field[x][y] == 2){
+         if (robotField.field[x][y] == 0 || robotField.field[x][y] == 2){
             System.out.println("Не попал!");
-            if (field.field[x][y] == 2 && Math.random() > 0.7){
+            if (robotField.field[x][y] == 2 && Math.random() > 0.7){
                 System.out.println("...но заставил меня понервничать");
 
             }
-            field.field[x][y] = 3;
+            robotField.field[x][y] = 3;
             moveRobot();
         }
 
-        else if (field.zerroCells(field.field, cell, 1).length > 0) {
-            System.out.println("Попал!");
-            field.field[x][y] = 4;
+        else if (robotField.field[x][y] == 3) {
+            System.out.println("Ты сюда уже промахивался)))");
         }
-        else if (field.zerroCells(field.field, cell, 4).length > 0) {
-            for (int i = 0; i < field.zerroCells(field.field, cell, 4).length; i++) {
-                if (field.zerroCells(field.field, field.zerroCells(field.field, cell, 4)[i], 1).length > 0) {
+        else if (robotField.field[x][y] == 4){
+                System.out.println("Хочешь потопить дважды? Давай другую клетку");
+        }
+
+
+        else if (robotField.zerroCells(robotField.field, cell, 1).length > 0) {
+            System.out.println("Попал!");
+            robotField.field[x][y] = 4;
+        }
+        else if (robotField.zerroCells(robotField.field, cell, 4).length > 0) {
+            for (int i = 0; i < robotField.zerroCells(robotField.field, cell, 4).length; i++) {
+                if (robotField.zerroCells(robotField.field, robotField.zerroCells(robotField.field, cell, 4)[i], 1).length > 0) {
                     System.out.println("Попал!");
-                    field.field[x][y] = 4;
+                    robotField.field[x][y] = 4;
                 }
-                else if (field.zerroCells(field.field, field.zerroCells(field.field, cell, 4)[i], 4).length > 0) {
-                    for (int j = 0; j < field.zerroCells(field.field, field.zerroCells(field.field, cell, 4)[i], 4).length; j++) {
-                        if (field.zerroCells(field.field, field.zerroCells(field.field, field.zerroCells(field.field, cell, 4)[i], 4)[j], 1).length > 0) {
+                else if (robotField.zerroCells(robotField.field, robotField.zerroCells(robotField.field, cell, 4)[i], 4).length > 0) {
+                    for (int j = 0; j < robotField.zerroCells(robotField.field, robotField.zerroCells(robotField.field, cell, 4)[i], 4).length; j++) {
+                        if (robotField.zerroCells(robotField.field, robotField.zerroCells(robotField.field, robotField.zerroCells(robotField.field, cell, 4)[i], 4)[j], 1).length > 0) {
                             System.out.println("Попал!");
-                            field.field[x][y] = 4;
+                            robotField.field[x][y] = 4;
                         }
                     }
                 }
@@ -86,7 +98,7 @@ public class Game {
         }
         else {
             System.out.println("Убил!");
-            field.field[x][y] = 4;
+            robotField.field[x][y] = 4;
         }
 
 
@@ -101,7 +113,7 @@ public class Game {
 
         String str = in.nextLine();
         str = str.replaceAll(" ", "");
-        str = str.toLowerCase();
+        str = str.toUpperCase();
         char[] chArray = str.toCharArray();
         //int x = Character.getNumericValue(chArray[0]);
         if (letters.indexOf(chArray[0]) < 0 ||
@@ -125,24 +137,27 @@ public class Game {
 
 
     public  void startGame(){
-        field.fieldGame();
+        robotField.fieldGame();
         /*for (int i = 0; i < field.field.length; i++) {
             System.out.println(Arrays.toString(field.field[i]));
         }*/
 
-        if (field.zerroField(field.field, 1).length == 20){
-            System.out.println("Поле готово. Для общения с роботом: 1-не попал; 2-попал; 3-убил");
+        if (robotField.zerroField(robotField.field, 1).length == 20){
+            System.out.println("Поле готово - ходи! Для общения с роботом: 1-не попал; 2-попал; 3-убил");
         }
-        else System.out.println("Не удалось сгенерить поле. Попробуйте еще раз");
+        else {
+            System.out.println("Что-то я запутался, расставляя корабли-_- давай попробуем еще раз");
+            return;
+        }
 
 
 
-        while (field.zerroField(field.field, 1).length > 0) {
-            if (Math.random() > 0.5) {
+        while (robotField.zerroField(robotField.field, 1).length > 0) {
+            /*if (Math.random() > 0.5) {
                 System.out.println("Ходи!");
-                moveUser();
+                moveRobot();
             }
-            else moveRobot();
+            else*/ moveUser();
 
         }
     }
